@@ -1,0 +1,27 @@
+// const config = require("./lib/config");
+const express = require("express");
+// const morgan = require("morgan");
+// const flash = require("express-flash");
+const session = require("express-session");
+// const { body, validationResult } = require("express-validator");
+// const store = require("connect-loki");
+// const PgPersistence  = require("./lib/pg-persistence");
+// const catchError = require("./lib/catch-error");
+const app = express();
+// const host = ;
+const port = 3051;
+// const LokiStore = store(session);
+
+app.set("views", "./views");
+app.set("view engine", "pug");
+app.use(express.static("public"));
+
+app.get('/', (req, res) => {
+  // Assuming the Pug code is in `views/test.pug`
+  res.render('test');
+});
+
+
+app.listen(3050, () => {
+  console.log(`Gradebook is listening on port ${port} !`);
+});

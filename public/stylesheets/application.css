@@ -1,0 +1,169 @@
+.navbar {
+  display: flex;
+  justify-content:  flex start;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+
+}
+
+.navbar a {
+  color: #333;
+  text-decoration: none;
+  margin-right: 20px; /* Add some space to the right of each link */
+}
+
+.navbar a:last-child {
+  margin-right: 0; /* Remove the right margin from the last link */
+}
+
+.navbar a:hover {
+  color: #4CAF50;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+.container {
+  display: flex;
+  
+}
+.courses {
+  flex: none; /* Override the flex property */
+  width: 200px; /* Set a specific width */
+  background-color: #fff;
+  padding: 20px;
+  margin-right: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+
+  
+}
+.courses h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+.courses ul {
+  list-style-type: none;
+  padding: 0;
+}
+.courses ul li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.courses ul li:last-child {
+  border-bottom: none;
+}
+.gradebook {
+  flex: 70%;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  position: relative;
+}
+
+.table-container table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  width: 300px
+}
+
+.table-container th {
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px;
+  border: 1px solid #ddd;
+  /* width: 200px; */
+}
+
+.table-container td {
+  border-bottom: 1px solid #ddd;
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.table-container tr:nth-child(even) {
+  background-color: #F1F6F9;
+}
+
+.table-container tr:hover {
+  background-color: #ddd;
+}
+
+.gradebook .button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.edited {
+  background-color: #ecc782; /* Light orange */
+}
+
+.editable {
+  border: none;
+  background-color: #f8f9fa; /* Light gray */
+  transition: background-color 0.3s ease;
+}
+
+.editable:focus {
+  outline: none;
+  background-color: #ffefd5; /* Light orange */
+  transition: background-color 0.3s ease;
+}
+.save-button {
+  position: absolute;
+}
+.save-button button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 23px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination {
+  /* display: flex;
+  justify-content: center; */
+  margin: 20px 0;
+}
+
+.pagination button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: #45a049;
+}

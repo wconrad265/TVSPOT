@@ -1,0 +1,78 @@
+doctype html
+html(lang="en-US")
+
+  head
+    title Gradebook 
+    meta(charset='utf-8')
+    link(rel="stylesheet" href="/stylesheets/application.css")
+  body
+    .navbar
+      a(href='#home') Home
+      a(href='#courses') Courses
+      a(href='#gradebook') Gradebook
+      a(href='#gradebook') Students
+
+    .container
+      .courses
+        h2 Courses
+        ul
+          li Mathematics
+          li Science
+          li English
+
+      .gradebook
+        h2 Course Section: Mathematics
+        button.button(onclick='addColumn()') Add Assignment
+
+        .table-container
+          div.table-wrapper
+            table#myTable 
+              tr
+                th Student / Assignment
+                th Overall
+                //- th Assignment 1<br><sub>Weight: 20%</sub>
+                //- th Assignment 2<br><sub>Weight: 30%</sub>
+                //- th Assignment 3<br><sub>Weight: 10%</sub>
+                //- th Final<br><sub>Weight: 40%</sub>
+                //- th Final<br><sub>Weight: 40%</sub>
+              tr
+                td John Doe
+                td A 
+                //- td(contenteditable='true', oninput="this.className='edited'") 85
+                //- td(contenteditable='true', oninput="this.className='edited'") 86
+                //- td(contenteditable='true', oninput="this.className='edited'") 88
+                //- td(contenteditable='true', oninput="this.className='edited'") 89
+                //- td(contenteditable='true', oninput="this.className='edited'") 90
+              tr
+                td will 
+                td(contenteditable='true', oninput="this.className='edited'") 85
+                //- td(contenteditable='true', oninput="this.className='edited'") 86
+                //- td(contenteditable='true', oninput="this.className='edited'") 88
+                //- td(contenteditable='true', oninput="this.className='edited'") 89
+                //- td(contenteditable='true', oninput="this.className='edited'") 90
+                //- td(contenteditable='true', oninput="this.className='edited'") 90
+        div.pagination
+          button(onclick='prevPage()') Prev
+          button(onclick='nextPage()') Next
+      saveButton.save-button#saveButton 
+        button.save(onclick='Save()') Save
+                
+  script.
+    window.onload = function() {
+      let table = document.getElementById('myTable');
+      let saveButton = document.getElementById('saveButton');
+      // Function to adjust the position of the save button
+      function adjustSaveButton() {
+        var rect = table.getBoundingClientRect();
+        let buttonWidth = saveButton.offsetWidth;
+        saveButton.style.left = (rect.right - buttonWidth  ) + 'px';
+        saveButton.style.top = (rect.bottom ) + 'px';
+      }
+
+      // Adjust the position of the save button when the page loads
+      adjustSaveButton();
+
+      // Adjust the position of the save button whenever the window is resized
+      window.onresize = adjustSaveButton;
+    }
+
