@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  .form-container
+    h1 Create New Post
+    form(action="/forum/post/new", method="POST")
+      label(for="postTitle") Title:
+      input(type="text"
+            id="postTitle"
+            name="postTitle"
+            placeholder="Post Title"
+            value=postTitle)
+
+      button(type="submit") Create Post
+
+  a.back-button(href="/forum") Back to Forum

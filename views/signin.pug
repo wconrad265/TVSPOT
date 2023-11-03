@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .form-container
+    h1 Sign In
+    form(action="/users/sign-in", method="POST")
+      label(for="username") Username:
+      input(type="text", id="username", name="username", placeholder="Your username")
+
+      label(for="password") Password:
+      input(type="password", id="password", name="password", placeholder="Your password")
+
+      button(type="submit") Sign In

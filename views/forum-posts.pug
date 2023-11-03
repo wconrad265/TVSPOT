@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  each post in posts
+    .post-container
+      .post-content
+        .post-info
+          p Date: #{post.formatted_date}
+        .post-title
+          h2= post.title
+        .post-info
+          p= post.username
+      a(href=`/forum/${post.id}`)
+
+  .new-post-button
+    a(href="/forum/post/new") Create New Post
+    
+  if pageNumber > 1
+    a.back-button(href=`/forum/${pageNumber - 1}`) Back
+
+  if pageNumber < maxPageNumber
+    a.next-button(href=`/forum/${pageNumber + 1}`) Next
+

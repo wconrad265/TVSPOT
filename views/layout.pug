@@ -1,0 +1,21 @@
+// layout.pug
+doctype html
+html
+  head
+    title Sample Forum
+    link(rel="stylesheet" type="text/css" href="/stylesheets/application.css")
+  body
+    header
+      h1 Sample Forum
+    main
+      - let kinds = Object.keys(flash || {});
+      if kinds.length > 0
+        ul
+          each kind in kinds
+            each message in flash[kind]
+              li.flash(class=kind)= message
+
+      block content  
+
+    footer
+      p Powered by Your Forum
