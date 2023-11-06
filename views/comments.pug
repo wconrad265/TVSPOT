@@ -8,6 +8,8 @@ block content
       p.comment-text= comment.markdown_body
       p.comment-info
         | Posted by #{comment.username} on #{comment.date}
+      if comment.user_id === currentUserId
+        a.edit-comment-button(href=`/forum/post/${postId}/edit-comment/${comment.id}?page=${pageNumber}`) Edit Comment
 
   .pagination-buttons
     if pageNumber > 1

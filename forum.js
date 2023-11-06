@@ -8,6 +8,9 @@ const store = require("connect-loki");
 const PgPersistence  = require("./lib/pg-persistence.js");
 const catchError = require("./lib/catch-error.js");
 const app = express();
+const requiresAuthentication  = require("./lib/requiresAuthentication.js");
+const { checkEditPostPermissions, checkEditCommentPermissions } = require("./lib/edit-permissions.js");
+const authRoutes = require("./routes/authRoutes.js")
 const host = config.HOST;
 const port = config.PORT;
 const LokiStore = store(session);
@@ -44,20 +47,11 @@ app.use((req, res, next) => {
   res.locals.flash = req.session.flash;
   res.locals.signedIn = req.session.signedIn; 
   res.locals.username = req.session.username;
-
+  res.locals.userId = req.session.userId;
   delete req.session.flash;
   next();
 });
 
-//checks if the user is signed int
-const requiresAuthentication = (req, res, next) => {
-  if (!res.locals.signedIn) {
-    console.log("UNauthorized");
-    res.redirect(302, "/users/signin");
-  } else {
-    next();
-  }
-}
 
 // redirect user to the first page of the forums
 app.get("/", (req, res) => {
@@ -168,30 +162,27 @@ app.get("/forum/post/:postId",
 
     let maxPageNumber = await res.locals.store.getMaxComments(postId, POSTS_PER_PAGE);
     let comments;
-
-    if (maxPageNumber === 0 && pageNumber > 1) {
+    console.log('test', maxPageNumber );
+    if (maxPageNumber === 0 && pageNumber > 1 && pageNumber > maxPageNumber) {
       throw new Error("Invalid Page Number");
     } else {
       if (maxPageNumber == 0) {
         comments = [];
-      } else if (pageNumber > maxPageNumber) {
-        throw new Error("Invalid Page Number");
       } else {
         comments = await res.locals.store.getCommentsForPage(+postId, pageNumber, POSTS_PER_PAGE);
         if (!comments) throw new Error('Comments not found for post');
-    
-        let postTitle = await res.locals.store.getPostTitle(+postId);
-        if(!postTitle) throw new Error('Post Title not found');
-        console.log(pageNumber, maxPageNumber);
-
-        res.render('comments', {
-          comments,
-          pageNumber,
-          maxPageNumber,
-          postTitle,
-          postId
-        }); 
       }
+      let postTitle = await res.locals.store.getPostTitle(+postId);
+      if(!postTitle) throw new Error('Post Title not found');
+
+      res.render('comments', {
+        comments,
+        pageNumber,
+        maxPageNumber,
+        postTitle,
+        postId,
+        currentUserId: res.locals.userId
+      }); 
     }
   })
 );
@@ -241,6 +232,80 @@ app.post("/forum/post/:postId/reply",
   })
 );
 
+//Render Edit-comment Page
+app.get("/forum/post/:postId/edit-comment/:commentId",
+  requiresAuthentication,
+  checkEditCommentPermissions,
+  catchError(async (req, res) => {
+    let postId = req.params.postId;
+    let commentId = req.params.commentId;
+    let pageNumber = req.query.page;
+    console.log(pageNumber);
+
+    let comment = await res.locals.store.getComment(+commentId);
+    if (!comment) throw new Error ("comment does not exist");
+
+    res.render("edit-comment", {
+      postId,
+      commentId,
+      comment,
+      pageNumber
+    })
+  })
+);
+
+//Edit a comment
+app.post("/forum/post/:postId/edit-comment/:commentId",
+  requiresAuthentication,
+  checkEditCommentPermissions,
+  [    
+    body("comment")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("A comment cannot be empty")
+    .isLength({ max: 500 })
+    .withMessage("Comments must be between 1 and 5000 characters")
+  ],
+  catchError(async (req, res) => {
+    let errors = validationResult(req);
+    let { postId, commentId } = req.params;
+    let pageNumber = req.query.page;
+    let comment = req.body.comment;
+
+    if (!errors.isEmpty()) {
+      errors.array().forEach(message => req.flash("error", message.msg));
+      res.render("edit-comment", {
+        flash: req.flash(),
+        postId,
+        commentId,
+        pageNumber
+      })
+    } else {
+      let updatedComment = res.locals.store.updateComment(comment, +commentId);
+      if (!updatedComment) throw new Error("Something went wrong Comment not Updated");
+      
+      req.flash("success", 'Your comment has been updated!');
+      res.redirect(`/forum/post/${postId}/?page=${pageNumber}`);
+    }
+  })
+);
+
+//delete a comment
+app.post("/forum/post/:postId/edit-comment/:commentId/destroy",
+  requiresAuthentication,
+  checkEditCommentPermissions,
+  catchError(async (req, res) => {
+    let { postId, commentId } = req.params;
+    let pageNumber = req.query.page;
+
+    let deleted = await res.locals.store.deleteComment(postId, commentId);
+    if (!deleted) throw new Error("Comment not Deleted");
+
+    req.flash("success", 'Your comment has been deleted!');
+    res.redirect(`/forum/post/${postId}/?page=${pageNumber}`);
+  }))
+
+
 //Render post management page
 app.get("/post-management", 
   requiresAuthentication,
@@ -257,6 +322,7 @@ app.get("/post-management",
 //Render Edit Post Page
 app.get("/post-management/edit/:postId", 
   requiresAuthentication,
+  checkEditPostPermissions,
   catchError(async (req, res) => {
     let postId = req.params.postId;
     let title = await res.locals.store.getPostTitle(+postId);
@@ -268,9 +334,10 @@ app.get("/post-management/edit/:postId",
   })
 );
 
-//Edit Post Title (Work in Progress)
+//Edit Post Title 
 app.post("/post-management/edit/:postId",
   requiresAuthentication,
+  checkEditPostPermissions,
   [
     body("postTitle")
     .trim()
@@ -328,6 +395,7 @@ app.post("/post-management/edit/:postId",
 //Delete Post 
 app.post("/post-management/delete/:postId",
   requiresAuthentication,
+  checkEditPostPermissions,
   catchError(async (req, res) => {
     let postId = req.params.postId;
 
@@ -342,53 +410,20 @@ app.post("/post-management/delete/:postId",
 
   })
 );
-//render sign in page
-app.get("/users/signin", (req, res) => {
-  res.render("signin");
-})
+authRoutes(app, catchError);
 
-//user sign in
-app.post("/users/signin", 
-  catchError(async (req, res) => {
-  let username = req.body.username.trim();
-  let password = req.body.password;
-
-  let authenticated = await res.locals.store.authenticate(username, password);
-
-  if (!authenticated) {
-    req.flash("error", "Invalid credentials.");
-    res.render("signin", {
-      flash: req.flash(),
-      username: username
-    });
-  } else {
-    req.session.username = username;
-    req.session.signedIn = true;
-    req.session.userId = await res.locals.store.getUserId(username);
-    req.flash("info", "Welcome!");
-    res.redirect("/forum?page=1");
-  }
-  })
-);
-
-//User sign out
-app.post("/users/signout", (req, res) => {
-  delete req.session.username;
-  delete req.session.signedIn;
-  delete req.session.userId;
-  res.redirect("/users/signin");
-});
 
 // Error handler
 app.use((err, req, res, _next) => {
   console.log(err); // Writes more extensive information to the console log
-  res.status(404).render('error');
+  let errorMessage = "The page you're looking for doesn't exist.";
+  res.status(404).render('error', { errorMessage });
 });
 
-// app.use((req, res) => {
-//   // console.log(error);
-//   res.status(404).render('error'); // Render your 404 error page (404.pug)
-// });
+app.use((req, res) => {
+  let errorMessage = "The page you're looking for doesn't exist.";
+  res.status(404).render('error', { errorMessage }); // Render your 404 error page (404.pug)
+});
 
 app.listen(port, host, () => {
   console.log(`Project is listening on port ${port} !`);

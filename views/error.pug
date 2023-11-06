@@ -3,5 +3,5 @@ extends layout
 block content
   .error-container
     h2 Oops! Something went wrong.
-    p The page you're looking for doesn't exist.
+    p=errorMessage
     a(href="/forum?page=1") Go back to the forum
