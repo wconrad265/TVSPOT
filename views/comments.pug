@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1 #{postTitle}
+
+  each comment in comments
+    .comment-container
+      p.comment-text= comment.markdown_body
+      p.comment-info
+        | Posted by #{comment.username} on #{comment.date}
+
+  .pagination-buttons
+    if pageNumber > 1
+      a.pagination-button(href=`/forum/post/${postId}?page=${pageNumber - 1}`) Previous
+    if pageNumber < maxPageNumber
+      a.pagination-button(href=`/forum/post/${postId}?page=${pageNumber + 1}`) Next
+
+  .reply-button-container
+    a.reply-button(href=`/forum/post/${postId}/reply`) Reply

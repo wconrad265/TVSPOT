@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  .form-container
+  .new-post
     h1 Create New Post
     form(action="/forum/post/new", method="POST")
       label(for="postTitle") Title:
@@ -10,7 +10,13 @@ block content
             name="postTitle"
             placeholder="Post Title"
             value=postTitle)
-
+            
+      label(for="comment") Comment:
+      textarea(type="text"
+               id="comment"
+               name="comment"
+               placeholder="Your comment"
+               rows="5") #{comment}
       button(type="submit") Create Post
 
-  a.back-button(href="/forum") Back to Forum
+  a.back-button(href="/forum?page=1") Back to Forum

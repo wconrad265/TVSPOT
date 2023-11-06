@@ -1,14 +1,23 @@
-// layout.pug
 doctype html
 html
   head
     title Sample Forum
     link(rel="stylesheet" type="text/css" href="/stylesheets/application.css")
+    script(src="/javascripts/application.js")
   body
     header
-      h1 Sample Forum
+      .header-content
+        a.link-title(href="/forum?page=1")
+          h1 Sample Forum
+        form(action="/post-management")
+          button(type="submit" class="post-management-button") Post Management
+        block signOut
+
+          form(action="/users/signout", method="POST")
+            button(type="submit" class="sign-out-button") Sign Out
+
     main
-      - let kinds = Object.keys(flash || {});
+      - let kinds = Object.keys(flash || {});pg
       if kinds.length > 0
         ul
           each kind in kinds
@@ -17,5 +26,5 @@ html
 
       block content  
 
-    footer
-      p Powered by Your Forum
+  footer
+
