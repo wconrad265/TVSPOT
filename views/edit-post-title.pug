@@ -3,9 +3,9 @@ extends layout
 block content
   .new-post
     h1=title
-    form(action=`/post-management/edit/${postId}`, method="POST")
+    form(action=`/posts/${postId}/edit`, method="POST")
       label(for="postTitle") New Post Title:
       input(type="text" id="postTitle" name="postTitle" value=postTitle)
 
       button(type="submit") Save
-  a.back-button(href="/post-management") Cancel
+  a.back-button(href="/posts/manage") Cancel

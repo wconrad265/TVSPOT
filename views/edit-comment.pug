@@ -3,11 +3,11 @@ extends layout
 block content
   .new-comment
     h1 Edit Comment
-    form(action=`/forum/post/${postId}/edit-comment/${commentId}?page=${pageNumber}`, method="POST")
+    form(action=`/posts/${postId}/comment/${commentId}/edit?page=${pageNumber}`, method="POST")
       label(for="comment") Comment Text
       textarea(type="text", id="comment", name="comment" rows="5") #{comment}
       button.edit-button(type="submit") Edit Comment
-    form.delete(action=`/forum/post/${postId}/edit-comment/${commentId}/destroy?page=${pageNumber}`, method="POST")
+    form.delete(action=`/posts/${postId}/comment/${commentId}/delete?page=${pageNumber}`, method="POST")
       button(type="submit") Delete
 
-  a.back-button(href=`/forum/post/${postId}?page=${pageNumber}`) Back
+  a.back-button(href=`/posts/${postId}?page=${pageNumber}`) Back

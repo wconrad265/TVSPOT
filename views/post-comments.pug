@@ -9,13 +9,13 @@ block content
       p.comment-info
         | Posted by #{comment.username} on #{comment.date}
       if comment.user_id === currentUserId
-        a.edit-comment-button(href=`/forum/post/${postId}/edit-comment/${comment.id}?page=${pageNumber}`) Edit Comment
+        a.edit-comment-button(href=`/posts/${postId}/comment/${comment.id}/edit?page=${pageNumber}`) Edit Comment
 
   .pagination-buttons
     if pageNumber > 1
-      a.pagination-button(href=`/forum/post/${postId}?page=${pageNumber - 1}`) Previous
+      a.pagination-button(href=`/posts/${postId}?page=${pageNumber - 1}`) Previous
     if pageNumber < maxPageNumber
-      a.pagination-button(href=`/forum/post/${postId}?page=${pageNumber + 1}`) Next
+      a.pagination-button(href=`/posts/${postId}?page=${pageNumber + 1}`) Next
 
   .reply-button-container
-    a.reply-button(href=`/forum/post/${postId}/reply`) Reply
+    a.reply-button(href=`/posts/${postId}/comment/new?page=${pageNumber}`) Reply

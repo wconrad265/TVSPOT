@@ -3,9 +3,9 @@ extends layout
 block content
   .new-comment
     h1 Create New Comment
-    form(action=`/forum/post/${postId}/reply`, method="POST")
+    form(action=`/posts/${postId}/comment/new?page=${pageNumber}`, method="POST")
       label(for="comment") Comment Text
       textarea#comment-text(name="comment" rows="5")
       button(type="submit") Create Comment
 
-  a.back-button(href=`/forum/post/${postId}?page=1`) Back
+  a.back-button(href=`/posts/${postId}?page=${pageNumber}`) Back

@@ -9,15 +9,18 @@ html
       .header-content
         a.link-title(href="/forum?page=1")
           h1 Sample Forum
-        form(action="/post-management")
-          button(type="submit" class="post-management-button") Post Management
+        .link-title
+          a(href="/posts/manage" class="post-management-button") Post Management
+        .link-title
+          a(href="/posts/new" class="post-management-button") Create New Post
+    
         block signOut
 
           form(action="/users/signout", method="POST")
             button(type="submit" class="sign-out-button") Sign Out
 
     main
-      - let kinds = Object.keys(flash || {});pg
+      - let kinds = Object.keys(flash || {});
       if kinds.length > 0
         ul
           each kind in kinds
@@ -27,4 +30,3 @@ html
       block content  
 
   footer
-

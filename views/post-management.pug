@@ -17,10 +17,10 @@ block content
             td= post.title
             td= post.formatted_date
             td
-              form(action=`/post-management/edit/${post.id}`, method="GET")
+              form(action=`/posts/${post.id}/edit`, method="GET")
                 button(type="submit") Edit
             td
-              form.delete(action=`/post-management/delete/${post.id}`, method="POST")
+              form.delete(action=`/posts/${post.id}/delete`, method="POST")
                 button(type="submit") Delete
 
   p
