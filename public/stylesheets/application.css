@@ -330,7 +330,7 @@ form-container a.back-button:hover {
 }
 
 .comment-container {
-  position: relative; 
+  position: relative;
   background-color: #fff;
   border-radius: 5px;
   margin-bottom: 20px;
@@ -352,8 +352,8 @@ form-container a.back-button:hover {
 .edit-comment-button {
   position: absolute;
   top: 5px;
-  right: 10px; 
-  background-color: #007bff; 
+  right: 10px;
+  background-color: #007bff;
   color: #fff;
   padding: 5px 10px;
   border: none;
@@ -367,9 +367,8 @@ form-container a.back-button:hover {
   background-color: #0056b3;
 }
 
-
 .new-comment {
-  background-color: #fff; 
+  background-color: #fff;
   border-radius: 5px;
   margin-bottom: 20px;
   padding: 20px;
@@ -377,16 +376,16 @@ form-container a.back-button:hover {
 }
 
 .new-comment h2 {
-  font-size: 1.2em; 
+  font-size: 1.2em;
   font-weight: bold;
-  color: #333; 
+  color: #333;
   margin-bottom: 10px;
 }
 
 .new-comment label {
   display: block;
   margin: 10px 0;
-  color: #333; 
+  color: #333;
 }
 
 .new-comment input[type="text"],
@@ -411,7 +410,6 @@ form-container a.back-button:hover {
 .new-comment button[type="submit"]:hover {
   background-color: #555;
 }
-
 
 .post-management-container {
   width: 80%;
@@ -455,11 +453,9 @@ form-container a.back-button:hover {
   border-bottom: 1px solid #ddd;
 }
 
-
 .post-management-container td a {
   margin-right: 10px;
 }
-
 
 .post-management-container p {
   text-align: center;
@@ -470,11 +466,10 @@ form-container a.back-button:hover {
   text-decoration: underline;
 }
 
-
 .header-content a.link-title[href="/post-management"] {
   text-decoration: none;
   color: #fff;
-  margin-left: 20px; 
+  margin-left: 20px;
 }
 
 .header-content a.link-title[href="/post-management"]:hover {
@@ -489,15 +484,15 @@ a.post-management-button {
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s;
-  margin-right: 20px; 
+  margin-right: 20px;
 }
 
 a.post-management-button:hover {
-  background-color: #555;;
+  background-color: #555;
 }
 
 .post-management-container .actions-cell {
-  text-align: center; 
+  text-align: center;
 }
 
 th.Actions {
@@ -509,6 +504,7 @@ th.Actions {
   display: flex;
 }
 
-.edit-button, .delete-button {
+.edit-button,
+.delete-button {
   margin-right: 10px;
 }

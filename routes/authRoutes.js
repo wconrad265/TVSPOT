@@ -4,30 +4,35 @@ module.exports = (app) => {
   //render sign in page
   app.get("/users/signin", (req, res) => {
     res.render("signin");
-  })
+  });
 
   //user sign in
-  app.post("/users/signin", 
+  app.post(
+    "/users/signin",
     catchError(async (req, res) => {
       const username = req.body.username.trim();
       const password = req.body.password;
+      const store = res.locals.store;
 
-      const authenticated = await res.locals.store.authenticate(username, password);
+      const authenticated = await store.authenticate(
+        username,
+        password,
+      );
 
       if (!authenticated) {
         req.flash("error", "Invalid credentials.");
         res.render("signin", {
           flash: req.flash(),
-          username: username
+          username: username,
         });
       } else {
         req.session.username = username;
         req.session.signedIn = true;
-        req.session.userId = await res.locals.store.getUserId(username);
+        req.session.userId = await store.getUserId(username);
         req.flash("info", "Welcome!");
         res.redirect("/forum?page=1");
       }
-      })
+    }),
   );
 
   //User sign out
@@ -37,5 +42,4 @@ module.exports = (app) => {
     delete req.session.userId;
     res.redirect("/users/signin");
   });
-}
-
+};
