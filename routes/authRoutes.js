@@ -9,10 +9,10 @@ module.exports = (app) => {
   //user sign in
   app.post("/users/signin", 
     catchError(async (req, res) => {
-    let username = req.body.username.trim();
-    let password = req.body.password;
+    const username = req.body.username.trim();
+    const password = req.body.password;
 
-    let authenticated = await res.locals.store.authenticate(username, password);
+    const authenticated = await res.locals.store.authenticate(username, password);
 
     if (!authenticated) {
       req.flash("error", "Invalid credentials.");
