@@ -14,10 +14,7 @@ module.exports = (app) => {
       const password = req.body.password;
       const store = res.locals.store;
 
-      const authenticated = await store.authenticate(
-        username,
-        password,
-      );
+      const authenticated = await store.authenticate(username, password);
 
       if (!authenticated) {
         req.flash("error", "Invalid credentials.");

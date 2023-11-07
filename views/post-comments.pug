@@ -1,9 +1,9 @@
 extends layout
 
 block content
-  h1 #{postTitle}
+  h1 #{forumPostTitle}
 
-  each comment in comments
+  each comment in forumPostComments
     .comment-container
       p.comment-text= comment.markdown_body
       p.comment-info

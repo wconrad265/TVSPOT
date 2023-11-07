@@ -1,19 +1,10 @@
 const { body, validationResult } = require("express-validator");
 const requiresAuthentication = require("../lib/requiresAuthentication.js");
 const { checkEditPostPermissions } = require("../lib/edit-permissions.js");
-const Comments_PER_PAGE = 5; //edit to change the number of posts per a
 const catchError = require("../lib/catch-error.js");
+const COMMENTS_PER_PAGINATION = 5; //edit to change the number of posts per a page
 
 module.exports = (app) => {
-  //View the Add new Forum Post Page
-  app.get(
-    "/posts/new",
-    requiresAuthentication,
-    catchError(async (req, res) => {
-      res.render("new-post");
-    }),
-  );
-
   //Render post management page
   app.get(
     "/posts/manage",
@@ -27,61 +18,75 @@ module.exports = (app) => {
     }),
   );
 
+  //View the Add new Forum Post Page
+  app.get(
+    "/posts/new",
+    requiresAuthentication,
+    catchError(async (req, res) => {
+      res.render("new-post");
+    }),
+  );
+
   // Create a new forum post
   app.post(
     "/posts/new",
     requiresAuthentication,
     [
-      body("postTitle")
+      body("forumPostTitle")
         .trim()
         .isLength({ min: 1 })
-        .withMessage("A title for the forum post is required.")
+        .withMessage("The forum post title cannot be empty.")
         .isLength({ max: 100 })
-        .withMessage("Forum title must be between 1 and 100 characters"),
-      body("comment")
+        .withMessage(
+          "The forum post title must contain between 1 and 100 characters",
+        ),
+      body("forumPostComment")
         .trim()
         .isLength({ min: 1 })
-        .withMessage("A comment for the forum post is required.")
-        .isLength({ max: 500 })
-        .withMessage("Forum title must be between 1 and 100 characters"),
+        .withMessage("The forum post comment cannot be empty.")
+        .isLength({ max: 1000 })
+        .withMessage(
+          "The forum post comment must contain between 1 and 1000 characters.",
+        ),
     ],
     catchError(async (req, res) => {
       const errors = validationResult(req);
-      let postTitle = req.body.postTitle;
-      let comment = req.body.comment;
+      const store = res.locals.store;
+      let forumPostTitle = req.body.forumPostTitle;
+      let forumPostComment = req.body.forumPostComment;
 
-      const renderNewForumPost = async (postTitle, comment) => {
+      const renderNewForumPost = async (forumPostTitle, forumPostComment) => {
         res.render("new-post", {
           flash: req.flash(),
-          postTitle: postTitle || "",
-          comment: comment || "",
+          forumPostTitle: forumPostTitle || "",
+          forumPostComment: forumPostComment || "",
         });
       };
 
       if (!errors.isEmpty()) {
         errors.array().forEach((error) => {
           req.flash("error", error.msg);
-          if (error.param === "postTitle") postTitle = null;
-          if (error.param === "comment") comment === null;
+          if (error.param === "forumPostTitle") forumPostTitle = null;
+          if (error.param === "forumPostComment") forumPostComment = null;
         });
-        return renderNewForumPost(postTitle, comment);
+        return renderNewForumPost(forumPostTitle, forumPostComment);
       }
 
-      if (await res.locals.store.existsForumPostTitle(postTitle)) {
+      if (await store.existsForumPostTitle(forumPostTitle)) {
         req.flash("error", "Forum Post title must be unique");
-        return renderNewForumPost(null, comment);
+        return renderNewForumPost(null, forumPostComment);
       }
 
-      const createdPost = await res.locals.store.createPost(postTitle);
+      const createdPost = await store.createPost(forumPostTitle);
 
       if (!createdPost) {
         req.flash("error", "Forum Post title must be unique");
-        return renderNewForumPost(null, comment);
+        return renderNewForumPost(null, forumPostComment);
       }
 
-      const createdComment = await res.locals.store.createComment(
+      const createdComment = await store.createComment(
         createdPost,
-        comment,
+        forumPostComment,
       );
       if (!createdComment) throw new Error("Comment not Created");
 
@@ -97,12 +102,12 @@ module.exports = (app) => {
     checkEditPostPermissions,
     catchError(async (req, res) => {
       const postId = req.params.postId;
-      const title = await res.locals.store.getPostTitle(+postId);
+      const forumPostTitle = await res.locals.store.getPostTitle(+postId);
 
       res.render("edit-post-title", {
         postId,
-        title: `Edit Title for '${title}'`,
-        postTitle: title,
+        title: `Edit Title for '${forumPostTitle}'`,
+        forumPostTitle,
       });
     }),
   );
@@ -113,23 +118,26 @@ module.exports = (app) => {
     requiresAuthentication,
     checkEditPostPermissions,
     [
-      body("postTitle")
+      body("forumPostTitle")
         .trim()
         .isLength({ min: 1 })
-        .withMessage("A title for the forum post is required.")
+        .withMessage("The forum post title cannot be empty.")
         .isLength({ max: 100 })
-        .withMessage("Forum title must be between 1 and 100 characters"),
+        .withMessage(
+          "The forum post comment must contain between 1 and 1000 characters.",
+        ),
     ],
     catchError(async (req, res) => {
-      const postTitle = req.body.postTitle;
+      const store = res.locals.store;
+      const forumPostTitle = req.body.forumPostTitle;
       const postId = req.params.postId;
 
       const renderEditForumPost = async () => {
-        const title = await res.locals.store.getPostTitle(postId);
+        const originalForumPostTitle = await store.getPostTitle(postId);
 
         res.render("edit-post-title", {
           flash: req.flash(),
-          title: `Edit Title for '${title}'`,
+          title: `Edit Title for '${originalForumPostTitle}'`,
           postId,
         });
       };
@@ -141,15 +149,12 @@ module.exports = (app) => {
           return renderEditForumPost();
         }
 
-        if (await res.locals.store.existsForumPostTitle(postTitle)) {
+        if (await store.existsForumPostTitle(forumPostTitle)) {
           req.flash("error", "Forum Post title must be unique");
           return renderEditForumPost();
         }
 
-        const editedPost = await res.locals.store.editPostTitle(
-          postTitle,
-          postId,
-        );
+        const editedPost = await store.editPostTitle(forumPostTitle, postId);
         if (!editedPost) {
           req.flash("error", "Forum Post title must be unique");
           return renderEditForumPost();
@@ -158,7 +163,7 @@ module.exports = (app) => {
         req.flash("success", "Your forum title has been edited!");
         res.redirect("/posts/manage");
       } catch (error) {
-        if (res.locals.store.isUniqueConstraintViolation(error)) {
+        if (store.isUniqueConstraintViolation(error)) {
           req.flash("error", "Forum Post title must be unique");
           return renderEditForumPost();
         } else {
@@ -175,7 +180,6 @@ module.exports = (app) => {
     checkEditPostPermissions,
     catchError(async (req, res) => {
       const postId = req.params.postId;
-
       const deleted = await res.locals.store.deletePost(postId);
 
       if (!deleted) {
@@ -194,15 +198,16 @@ module.exports = (app) => {
     catchError(async (req, res) => {
       const pageNumber = parseInt(req.query.page);
       const postId = req.params.postId;
+      const store = res.locals.store;
 
       if (isNaN(pageNumber) || pageNumber < 1)
         throw new Error("Invalid Page Number");
 
-      const maxPageNumber = await res.locals.store.getMaxComments(
+      const maxPageNumber = await store.getMaxComments(
         postId,
-        Comments_PER_PAGE,
+        COMMENTS_PER_PAGINATION,
       );
-      let comments = [];
+      let forumPostComments = [];
 
       if (
         (maxPageNumber === 0 && pageNumber > 1) ||
@@ -210,22 +215,22 @@ module.exports = (app) => {
       ) {
         throw new Error("Invalid Page Number");
       } else if (maxPageNumber !== 0) {
-        comments = await res.locals.store.getCommentsForPage(
-          +postId,
+        forumPostComments = await store.getCommentsForPage(
+          postId,
           pageNumber,
-          Comments_PER_PAGE,
+          COMMENTS_PER_PAGINATION,
         );
-        if (!comments) throw new Error("Comments not found for post");
+        if (!forumPostComments) throw new Error("Comments not found for post");
       }
 
-      const postTitle = await res.locals.store.getPostTitle(+postId);
-      if (!postTitle) throw new Error("Post Title not found");
+      const forumPostTitle = await store.getPostTitle(+postId);
+      if (!forumPostTitle) throw new Error("Post Title not found");
 
       res.render("post-comments", {
-        comments,
+        forumPostComments,
         pageNumber,
         maxPageNumber,
-        postTitle,
+        forumPostTitle,
         postId,
         currentUserId: res.locals.userId,
       });

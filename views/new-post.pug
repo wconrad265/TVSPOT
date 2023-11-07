@@ -4,19 +4,19 @@ block content
   .new-post
     h1 Create New Post
     form(action="/posts/new", method="POST")
-      label(for="postTitle") Title:
+      label(for="forumPostTitle") Title:
       input(type="text"
-            id="postTitle"
-            name="postTitle"
+            id="forumPostTitle"
+            name="forumPostTitle"
             placeholder="Post Title"
-            value=postTitle)
+            value=forumPostTitle)
             
-      label(for="comment") Comment:
+      label(for="forumPostComment") Comment:
       textarea(type="text"
-               id="comment"
-               name="comment"
+               id="forumPostComment"
+               name="forumPostComment"
                placeholder="Your comment"
-               rows="5") #{comment}
+               rows="5") #{forumPostComment}
       button(type="submit") Create Post
 
   a.back-button(href="/forum?page=1") Back to Forum

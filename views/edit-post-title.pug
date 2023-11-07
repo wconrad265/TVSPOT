@@ -4,8 +4,8 @@ block content
   .new-post
     h1=title
     form(action=`/posts/${postId}/edit`, method="POST")
-      label(for="postTitle") New Post Title:
-      input(type="text" id="postTitle" name="postTitle" value=postTitle)
+      label(for="forumPostTitle") New Post Title:
+      input(type="text" id="forumPostTitle" name="forumPostTitle" value=forumPostTitle)
 
       button(type="submit") Save
   a.back-button(href="/posts/manage") Cancel
