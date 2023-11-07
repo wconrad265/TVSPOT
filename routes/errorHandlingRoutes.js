@@ -8,6 +8,6 @@ module.exports = (app) => {
   
   app.use((req, res) => {
     const errorMessage = "The page you're looking for doesn't exist.";
-    res.status(404).render('error', { errorMessage }); // Render your 404 error page (404.pug)
+    res.status(404).render('error', { errorMessage }); 
   });
 }
