@@ -330,13 +330,13 @@ form-container a.back-button:hover {
 }
 
 .comment-container {
-  position: relative; /* Ensure the container serves as a positioning context */
+  position: relative; 
   background-color: #fff;
   border-radius: 5px;
   margin-bottom: 20px;
   padding: 20px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-  overflow: hidden; /* Create a new block formatting context */
+  overflow: hidden;
 }
 
 .comment-text {
@@ -351,9 +351,9 @@ form-container a.back-button:hover {
 
 .edit-comment-button {
   position: absolute;
-  top: 5px; /* Adjust as needed to position vertically */
-  right: 10px; /* Adjust as needed to position horizontally */
-  background-color: #007bff; /* Add your desired button styles */
+  top: 5px;
+  right: 10px; 
+  background-color: #007bff; 
   color: #fff;
   padding: 5px 10px;
   border: none;
@@ -364,7 +364,7 @@ form-container a.back-button:hover {
 }
 
 .edit-comment-button:hover {
-  background-color: #0056b3; /* Change the background color on hover */
+  background-color: #0056b3;
 }
 
 
@@ -507,9 +507,9 @@ th.Actions {
 }
 
 .button-container {
-  display: flex; /* Use flexbox to arrange buttons horizontally */
+  display: flex;
 }
 
 .edit-button, .delete-button {
-  margin-right: 10px; /* Add some spacing between the buttons (adjust as needed) */
+  margin-right: 10px;
 }
