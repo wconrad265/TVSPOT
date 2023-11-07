@@ -1,6 +1,6 @@
 const requiresAuthentication = require("../lib/requiresAuthentication.js");
 const catchError = require("../lib/catch-error.js");
-const POSTS_PER_PAGE = 5; //edit to change the number of posts per a
+const POSTS_PER_Pagination = 5; //edit to change the number of posts per a
 
 module.exports = (app) => {
   // redirect user to the first page of the forums
@@ -14,11 +14,12 @@ module.exports = (app) => {
     requiresAuthentication,
     catchError(async (req, res) => {
       const pageNumber = parseInt(req.query.page);
+      const store = res.locals.store;
 
       if (isNaN(pageNumber) || pageNumber < 1)
         throw new Error("Invalid Page Number");
 
-      const maxPageNumber = await res.locals.store.getMaxPosts(POSTS_PER_PAGE);
+      const maxPageNumber = await store.getMaxPosts(POSTS_PER_Pagination);
       let posts = [];
 
       if (
@@ -27,12 +28,9 @@ module.exports = (app) => {
       ) {
         throw new Error("Invalid Page Number");
       } else if (maxPageNumber !== 0) {
-        posts = await res.locals.store.getPostsForPage(
-          pageNumber,
-          POSTS_PER_PAGE,
-        );
+        posts = await store.getPostsForPage(pageNumber, POSTS_PER_Pagination);
       }
-
+      console.log(posts);
       res.render("forum-posts", {
         posts,
         pageNumber,

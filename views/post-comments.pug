@@ -7,7 +7,7 @@ block content
     .comment-container
       p.comment-text= comment.markdown_body
       p.comment-info
-        | Posted by #{comment.username} on #{comment.date}
+        | Posted by #{comment.username} #{comment.formatted_date} at #{comment.time}
       if comment.user_id === currentUserId
         a.edit-comment-button(href=`/posts/${postId}/comment/${comment.id}/edit?page=${pageNumber}`) Edit Comment
 

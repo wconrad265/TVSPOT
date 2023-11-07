@@ -28,7 +28,7 @@ app.use(
       path: "/",
       secure: false,
     },
-    name: "launch-school-todos-session-id",
+    name: "new-forum",
     resave: false,
     saveUninitialized: true,
     secret: config.SECRET,

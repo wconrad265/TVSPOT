@@ -66,8 +66,8 @@ module.exports = (app) => {
       if (!errors.isEmpty()) {
         errors.array().forEach((error) => {
           req.flash("error", error.msg);
-          if (error.param === "forumPostTitle") forumPostTitle = null;
-          if (error.param === "forumPostComment") forumPostComment = null;
+          if (error.path === "forumPostTitle") forumPostTitle = null;
+          if (error.path === "forumPostComment") forumPostComment = null;
         });
         return renderNewForumPost(forumPostTitle, forumPostComment);
       }
@@ -225,7 +225,7 @@ module.exports = (app) => {
 
       const forumPostTitle = await store.getPostTitle(+postId);
       if (!forumPostTitle) throw new Error("Post Title not found");
-
+      console.log(forumPostComments);
       res.render("post-comments", {
         forumPostComments,
         pageNumber,

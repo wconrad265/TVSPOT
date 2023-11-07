@@ -15,7 +15,7 @@ block content
         each post in userPosts
           tr
             td= post.title
-            td= post.formatted_date
+            td #{post.formatted_date} #{post.time}
             td
               form(action=`/posts/${post.id}/edit`, method="GET")
                 button(type="submit") Edit
