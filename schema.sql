@@ -10,7 +10,7 @@ CREATE TABLE Users (
 -- Create the Posts table
 CREATE TABLE Posts (
     id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL CHECK (LENGTH(title) <= 100),
+    title TEXT NOT NULL,
     date TIMESTAMP NOT NULL DEFAULT NOW(),
     user_id INTEGER NOT NULL REFERENCES Users(id) ON DELETE CASCADE
 );
