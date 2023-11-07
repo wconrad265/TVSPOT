@@ -12,23 +12,18 @@ module.exports = (app) => {
   app.get("/forum", 
     requiresAuthentication, 
     catchError(async (req, res) => {
-      let pageNumber = parseInt(req.query.page);
+      const pageNumber = parseInt(req.query.page);
 
       if (isNaN(pageNumber) || pageNumber < 1) throw new Error('Invalid Page Number');
 
-      let maxPageNumber = await res.locals.store.getMaxPosts(POSTS_PER_PAGE);
-      let posts;
+      const maxPageNumber = await res.locals.store.getMaxPosts(POSTS_PER_PAGE);
+      let posts = [];
 
-      if (maxPageNumber === 0 && pageNumber > 1) {
+      if ((maxPageNumber === 0 && pageNumber > 1) || 
+           maxPageNumber !== 0 && pageNumber > maxPageNumber) {
         throw new Error("Invalid Page Number");
-      } else {
-        if (maxPageNumber == 0) {
-          posts = [];
-        } else if (pageNumber > maxPageNumber) {
-          throw new Error("Invalid Page Number");
-        } else {
-          posts = await res.locals.store.getPostsForPage(pageNumber, POSTS_PER_PAGE);
-        }
+      } else if (maxPageNumber !== 0) {
+        posts = await res.locals.store.getPostsForPage(pageNumber, POSTS_PER_PAGE);
       }
 
       res.render('forum-posts', {
