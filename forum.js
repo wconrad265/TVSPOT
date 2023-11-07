@@ -5,18 +5,15 @@ const flash = require("express-flash");
 const session = require("express-session");
 const store = require("connect-loki");
 const PgPersistence  = require("./lib/pg-persistence.js");
-const catchError = require("./lib/catch-error.js");
 const app = express();
-const authRoutes = require("./routes/authRoutes.js")
-const postRoutes = require("./routes/postRoutes.js")
-const commentRoutes = require("./routes/commentRoutes.js")
-const errorHandlingRoutes = require("./routes/errorHandlingRoutes.js")
+const forumRoute = require("./routes/forumRoute.js");
+const authRoutes = require("./routes/authRoutes.js");
+const postRoutes = require("./routes/postRoutes.js");
+const commentRoutes = require("./routes/commentRoutes.js");
+const errorHandlingRoutes = require("./routes/errorHandlingRoutes.js");
 const host = config.HOST;
 const port = config.PORT;
 const LokiStore = store(session);
-const requiresAuthentication  = require("./lib/requiresAuthentication.js");
-const POSTS_PER_PAGE = 5; //edit to change the number of posts per a
-
 
 app.set("views", "./views");
 app.set("view engine", "pug");
@@ -54,46 +51,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// redirect user to the first page of the forums
-app.get("/", (req, res) => {
-  res.redirect("/forum?page=1")
-});
+forumRoute(app);
 
-//this is the home page.
-app.get("/forum", 
-  requiresAuthentication, 
-  catchError(async (req, res) => {
-    let pageNumber = parseInt(req.query.page);
+postRoutes(app);
 
-    if (isNaN(pageNumber) || pageNumber < 1) throw new Error('Invalid Page Number');
+commentRoutes(app);
 
-    let maxPageNumber = await res.locals.store.getMaxPosts(POSTS_PER_PAGE);
-    let posts;
-
-    if (maxPageNumber === 0 && pageNumber > 1) {
-      throw new Error("Invalid Page Number");
-    } else {
-      if (maxPageNumber == 0) {
-        posts = [];
-      } else if (pageNumber > maxPageNumber) {
-        throw new Error("Invalid Page Number");
-      } else {
-        posts = await res.locals.store.getPostsForPage(pageNumber, POSTS_PER_PAGE);
-      }
-    }
-
-    res.render('forum-posts', {
-      posts,
-      pageNumber,
-      maxPageNumber
-    });
-  })
-);
-postRoutes(app, catchError);
-
-commentRoutes(app, catchError);
-
-authRoutes(app, catchError);
+authRoutes(app);
 
 errorHandlingRoutes(app);
 

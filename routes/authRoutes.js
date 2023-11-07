@@ -1,4 +1,6 @@
-module.exports = (app, catchError) => {
+const catchError = require("../lib/catch-error.js");
+
+module.exports = (app) => {
   //render sign in page
   app.get("/users/signin", (req, res) => {
     res.render("signin");

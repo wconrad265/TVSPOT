@@ -1,8 +1,10 @@
 const requiresAuthentication  = require("../lib/requiresAuthentication.js");
 const { checkEditCommentPermissions } = require("../lib/edit-permissions.js");
 const { body, validationResult } = require("express-validator");
+const catchError = require("../lib/catch-error.js");
 
-module.exports = (app, catchError) => {
+
+module.exports = (app) => {
   //View the create comment(reply) page
   app.get("/posts/:postId/comment/new", 
     requiresAuthentication,

@@ -1,10 +1,11 @@
 const { body, validationResult } = require("express-validator");
 const requiresAuthentication  = require("../lib/requiresAuthentication.js");
 const { checkEditPostPermissions } = require("../lib/edit-permissions.js");
-const POSTS_PER_PAGE = 5; //edit to change the number of posts per a
+const Comments_PER_PAGE = 5; //edit to change the number of posts per a
+const catchError = require("../lib/catch-error.js");
 
 
-module.exports = (app, catchError) => {
+module.exports = (app) => {
   //View the Add new Forum Post Page
   app.get("/posts/new",
   requiresAuthentication,
@@ -181,7 +182,7 @@ module.exports = (app, catchError) => {
     let postId = req.params.postId;
     if (isNaN(pageNumber) || pageNumber < 1) throw new Error('Invalid Page Number');
 
-    let maxPageNumber = await res.locals.store.getMaxComments(postId, POSTS_PER_PAGE);
+    let maxPageNumber = await res.locals.store.getMaxComments(postId, Comments_PER_PAGE);
     let comments;
     console.log('test', maxPageNumber );
     if (maxPageNumber === 0 && pageNumber > 1 && pageNumber > maxPageNumber) {
@@ -190,7 +191,7 @@ module.exports = (app, catchError) => {
       if (maxPageNumber == 0) {
         comments = [];
       } else {
-        comments = await res.locals.store.getCommentsForPage(+postId, pageNumber, POSTS_PER_PAGE);
+        comments = await res.locals.store.getCommentsForPage(+postId, pageNumber, Comments_PER_PAGE);
         if (!comments) throw new Error('Comments not found for post');
       }
       let postTitle = await res.locals.store.getPostTitle(+postId);

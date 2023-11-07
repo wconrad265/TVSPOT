@@ -12,6 +12,7 @@ block content
         a.edit-comment-button(href=`/posts/${postId}/comment/${comment.id}/edit?page=${pageNumber}`) Edit Comment
 
   .pagination-buttons
+    a.post-management-button(href='/forum?page=1') Back to Forum
     if pageNumber > 1
       a.pagination-button(href=`/posts/${postId}?page=${pageNumber - 1}`) Previous
     if pageNumber < maxPageNumber
@@ -19,3 +20,5 @@ block content
 
   .reply-button-container
     a.reply-button(href=`/posts/${postId}/comment/new?page=${pageNumber}`) Reply
+  p
+    
