@@ -46,8 +46,8 @@ module.exports = (app) => {
     ],
     catchError(async (req, res) => {
       const errors = validationResult(req);
-      const postTitle = req.body.postTitle;
-      const comment = req.body.comment;
+      let postTitle = req.body.postTitle;
+      let comment = req.body.comment;
 
       const renderNewForumPost = async(postTitle, comment) => {
         res.render('new-post', {
@@ -58,20 +58,26 @@ module.exports = (app) => {
       };
 
       if (!errors.isEmpty()) {
-        errors.array().forEach(message => req.flash("error", message.msg));
-        return renderNewForumPost();
+
+        errors.array().forEach(error => {
+          req.flash("error", error.msg);
+          if (error.param === 'postTitle') postTitle = null;
+          if (error.param === 'comment') comment === null;
+        });
+
+        return renderNewForumPost(postTitle, comment);
       } 
       
       if (await res.locals.store.existsForumPostTitle(postTitle)) {
         req.flash("error", "Forum Post title must be unique");
-        return renderNewForumPost(postTitle, comment);
+        return renderNewForumPost(null, comment);
       } 
       
       const createdPost = await res.locals.store.createPost(postTitle);
 
       if (!createdPost) {
         req.flash("error", "Forum Post title must be unique");
-        return renderNewForumPost(undefined, comment);
+        return renderNewForumPost(null, comment);
       } 
 
       const createdComment = await res.locals.store.createComment(createdPost, comment);
