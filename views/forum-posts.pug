@@ -6,12 +6,10 @@ block content
     a.link-post(href=`/posts/${post.id}?page=1`)
       .post-container
         .post-content
-          .post-info
-            p #{post.formatted_date} at #{post.time}
           .post-title
             h2= post.title
           .post-info
-            p= post.username
+            p #{post.username} • #{post.formatted_date} at #{post.time}
           .replies 
             p Replies: #{post.number_of_comments}
   

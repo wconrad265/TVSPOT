@@ -16,8 +16,9 @@ block content
     a.post-management-button(href='/forum?page=1') Back to Forum
     if pageNumber > 1
       a.pagination-button(href=`/posts/${postId}?page=${pageNumber - 1}`) Previous
-    -for (let i = Math.max(1, pageNumber - pagesToShow); i <= Math.min(pageNumber + pagesToShow, maxPageNumber); i += 1)
-      a.pagination-number(href=`/posts/${postId}?page=${i}`)= i
+    if maxPageNumber > 1
+      -for (let i = Math.max(1, pageNumber - pagesToShow); i <= Math.min(pageNumber + pagesToShow, maxPageNumber); i += 1)
+        a.pagination-number(href=`/posts/${postId}?page=${i}`)= i
     if pageNumber < maxPageNumber
       a.pagination-button(href=`/posts/${postId}?page=${pageNumber + 1}`) Next
 
