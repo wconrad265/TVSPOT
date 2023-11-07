@@ -58,13 +58,11 @@ module.exports = (app) => {
       };
 
       if (!errors.isEmpty()) {
-
         errors.array().forEach(error => {
           req.flash("error", error.msg);
           if (error.param === 'postTitle') postTitle = null;
           if (error.param === 'comment') comment === null;
         });
-
         return renderNewForumPost(postTitle, comment);
       } 
       
