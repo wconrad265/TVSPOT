@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx nodemon forum.js",
-    "dev": "nodemon --inspect forum.js"
+    "dev": "nodemon --inspect forum.js",
+    "format": "npx prettier . --write",
+    "init-db-sample": "bash ./lib/init-db-sample.sh",
+    "init-db-schema": "bash ./lib/init-db-schema.sh"
   },
   "author": "",
   "license": "ISC",

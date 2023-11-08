@@ -9,10 +9,11 @@ html
       .header-content
         a.link-title(href="/forum?page=1")
           h1 TV SPOT
-        .link-title
-          a(href="/posts/manage" class="post-management-button") Post Management
-        .link-title
-          a(href="/posts/new" class="post-management-button") Create New Post
+        if signedIn
+          .link-title
+            a(href="/posts/manage" class="post-management-button") Post Management
+          .link-title
+            a(href="/posts/new" class="post-management-button") Create New Post
     
         block signOut
 

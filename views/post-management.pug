@@ -14,7 +14,8 @@ block content
       tbody
         each post in userPosts
           tr
-            td= post.title
+            td 
+              a(href=`/posts/${post.id}?page=1`) #{post.title}
             td #{post.formatted_date} #{post.time}
             td
               form(action=`/posts/${post.id}/edit`, method="GET")

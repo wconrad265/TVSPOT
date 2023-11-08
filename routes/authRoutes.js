@@ -30,6 +30,7 @@ module.exports = (app) => {
         res.redirect("/forum?page=1");
       }
     }),
+    
   );
 
   //User sign out

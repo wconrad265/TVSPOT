@@ -8,7 +8,7 @@ module.exports = (app) => {
     res.redirect("/forum?page=1");
   });
 
-  //this is the home page.
+  //this is the home page. Display forum posts
   app.get(
     "/forum",
     requiresAuthentication,
@@ -20,7 +20,8 @@ module.exports = (app) => {
         throw new Error("Invalid Page Number");
 
       const maxPageNumber = await store.getMaxPosts(POSTS_PER_Pagination);
-      if (!maxPageNumber) throw new Error("Could not get MaxPageNumber");
+      console.log(maxPageNumber);
+      if (!maxPageNumber && maxPageNumber !== 0) throw new Error("Could not get MaxPageNumber");
       let posts = [];
 
       if (

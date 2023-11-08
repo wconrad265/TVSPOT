@@ -85,8 +85,8 @@ module.exports = (app) => {
         .trim()
         .isLength({ min: 1 })
         .withMessage("A comment cannot be empty")
-        .isLength({ max: 500 })
-        .withMessage("Comments must be between 1 and 5000 characters"),
+        .isLength({ max: 1000 })
+        .withMessage("Comments must be between 1 and 1000 characters"),
     ],
     catchError(async (req, res) => {
       const errors = validationResult(req);
