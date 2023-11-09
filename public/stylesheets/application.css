@@ -411,6 +411,10 @@ form-container a.back-button:hover {
   background-color: #555;
 }
 
+/* .new-comment form {
+  display: inline-block;
+} */
+
 .post-management-container {
   width: 80%;
   margin: 20px auto;

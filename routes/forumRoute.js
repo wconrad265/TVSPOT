@@ -21,7 +21,8 @@ module.exports = (app) => {
 
       const maxPageNumber = await store.getMaxPosts(POSTS_PER_Pagination);
       console.log(maxPageNumber);
-      if (!maxPageNumber && maxPageNumber !== 0) throw new Error("Could not get MaxPageNumber");
+      if (!maxPageNumber && maxPageNumber !== 0)
+        throw new Error("Could not get MaxPageNumber");
       let posts = [];
 
       if (
@@ -33,7 +34,9 @@ module.exports = (app) => {
         posts = await store.getPostsForPage(pageNumber, POSTS_PER_Pagination);
         if (!posts) throw new Error("Posts not found");
       }
-      console.log(posts);
+
+
+      
       res.render("forum-posts", {
         posts,
         pageNumber,
