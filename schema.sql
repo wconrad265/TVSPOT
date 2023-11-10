@@ -2,15 +2,13 @@
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     username TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    type TEXT NOT NULL DEFAULT 'user',
-    status TEXT NOT NULL DEFAULT 'active'
+    password TEXT NOT NULL
 );
 
 -- Create the Posts table
 CREATE TABLE Posts (
     id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL,
+    title TEXT UNIQUE NOT NULL,
     date TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     user_id INTEGER NOT NULL REFERENCES Users(id) ON DELETE CASCADE
 );

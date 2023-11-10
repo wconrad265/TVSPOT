@@ -1,10 +1,9 @@
-
 INSERT INTO Users (username, password) VALUES
-    ('TVAddict23', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm'),
-    ('BingeWatcher99', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm'),
-    ('DramaQueen', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm'),
-    ('SciFiGeek', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm'),
-    ('ComedyLover', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm');
+    ('tvaddict23', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm'),
+    ('bingewatcher99', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm'),
+    ('dramaqueen', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm'),
+    ('scifigeek', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm'),
+    ('comedylover', '$2b$10$8RSrrqCM63VXwRa6z4ML0u9sPw7osmgQyl1lktVEHlc0DJSN.KGWm');
 
 INSERT INTO Posts (title, user_id, date) VALUES 
     ('Game of Thrones - Season 8 Discussion', 1, NOW()),

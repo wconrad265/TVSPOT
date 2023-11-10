@@ -31,9 +31,22 @@ To install and run the application, follow these steps:
 
 The project includes two scripts in the package.json file for setting up the database:
 
-- `init-db-sample`: This script checks if the `forum` database exists. If it does, it prompts the user to either drop the existing database and recreate it with seed data and schema, or cancel the operation. If the `forum` database does not exist, it prompts the user to create it with seed data and schema.
+- `npm run init-db-sample`: This script checks if the `forum` database exists. If it does, it prompts the user to either drop the existing database and recreate it with seed data and schema, or cancel the operation. If the `forum` database does not exist, it prompts the user to create it with seed data and schema.
 
-- `init-db-schema`: This script checks if the `forum` database exists. If it does, it prompts the user to either delete the existing database and create a new blank database with the schema, or cancel the operation. If the `forum` database does not exist, it prompts the user to create it with the schema.
+- `npm run init-db-schema`: This script checks if the `forum` database exists. If it does, it prompts the user to either delete the existing database and create a new blank database with the schema, or cancel the operation. If the `forum` database does not exist, it prompts the user to create it with the schema.
+
+## User Data for Sample Database
+
+The following table provides the usernames and their corresponding passwords for the sample database. Please note that for demonstration purposes, all users have the same password, which is `1234`. 
+
+| Username       | Password |
+| -------------- | -------- |
+| tvaddict23     | 1234     |
+| bingewatcher99 | 1234     |
+| dramaqueen     | 1234     |
+| scifigeek      | 1234     |
+| comedylover    | 1234     |
+
 
 ## Usage
 

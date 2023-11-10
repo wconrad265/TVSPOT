@@ -24,7 +24,7 @@ if [ "$confirm" == "y" ]; then
   createdb "$db_name"
 
   # Initializes the database schema
-  psql -d "$db_name" < schema.sql
+  psql -d "$db_name" < ./schema.sql
 
   echo "Database '$db_name' has been created with the schema."
 else

@@ -23,7 +23,7 @@ if [ "$confirm" == "y" ]; then
   createdb "$db_name"
 
   # Initializes the database schema
-  psql -d "$db_name" < schema.sql
+  psql -d "$db_name" < ./schema.sql
 
   # Seeds the database with data
   psql -d "$db_name" < ./lib/seed-data.sql
