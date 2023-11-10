@@ -3,6 +3,7 @@ const requiresAuthentication = require("../lib/requiresAuthentication.js");
 const { checkEditPostPermissions } = require("../lib/edit-permissions.js");
 const catchError = require("../lib/catch-error.js");
 const COMMENTS_PER_PAGINATION = 5; //edit to change the number of posts per a page
+const POSTS_PER_Pagination = 5; //edit to change the number of posts per a page
 
 module.exports = (app) => {
   //Render post management page
@@ -10,11 +11,38 @@ module.exports = (app) => {
     "/posts/manage",
     requiresAuthentication,
     catchError(async (req, res) => {
-      const userPosts = await res.locals.store.getUserPosts();
+      const pageNumber = parseInt(req.query.page);
+      const store = res.locals.store;
+
+      if (isNaN(pageNumber) || pageNumber < 1)
+        throw new Error("Invalid Page Number");
+
+      const maxPageNumber = await store.getMaxUserPosts(POSTS_PER_Pagination);
+
+      if (!maxPageNumber && maxPageNumber !== 0)
+        throw new Error("Could not get MaxPageNumber");
+      let userPosts = [];
+
+      if (
+        (maxPageNumber === 0 && pageNumber > 1) ||
+        (maxPageNumber !== 0 && pageNumber > maxPageNumber)
+      ) {
+        throw new Error("Invalid Page Number");
+      } else if (maxPageNumber !== 0) {
+        userPosts = await store.getUserPostsForPage(
+          pageNumber,
+          POSTS_PER_Pagination,
+        );
+        if (!userPosts) throw new Error("Posts not found");
+      }
 
       if (!userPosts) throw new Error("User Posts not found");
-
-      res.render("post-management", { userPosts });
+      console.log(pageNumber, maxPageNumber);
+      res.render("post-management", {
+        userPosts,
+        pageNumber,
+        maxPageNumber,
+      });
     }),
   );
 
@@ -102,12 +130,14 @@ module.exports = (app) => {
     checkEditPostPermissions,
     catchError(async (req, res) => {
       const postId = req.params.postId;
+      const pageNumber = parseInt(req.query.page);
       const forumPostTitle = await res.locals.store.getPostTitle(+postId);
 
       res.render("edit-post-title", {
         postId,
         title: `Edit Title for '${forumPostTitle}'`,
         forumPostTitle,
+        pageNumber,
       });
     }),
   );
@@ -131,6 +161,7 @@ module.exports = (app) => {
       const store = res.locals.store;
       const forumPostTitle = req.body.forumPostTitle;
       const postId = req.params.postId;
+      const pageNumber = parseInt(req.query.page);
 
       const renderEditForumPost = async () => {
         const originalForumPostTitle = await store.getPostTitle(postId);
@@ -139,6 +170,7 @@ module.exports = (app) => {
           flash: req.flash(),
           title: `Edit Title for '${originalForumPostTitle}'`,
           postId,
+          pageNumber,
         });
       };
 
@@ -161,7 +193,7 @@ module.exports = (app) => {
         }
 
         req.flash("success", "Your forum title has been edited!");
-        res.redirect("/posts/manage");
+        res.redirect(`/posts/manage?page=${pageNumber}`);
       } catch (error) {
         if (store.isUniqueConstraintViolation(error)) {
           req.flash("error", "Forum Post title must be unique");
@@ -179,6 +211,7 @@ module.exports = (app) => {
     requiresAuthentication,
     checkEditPostPermissions,
     catchError(async (req, res) => {
+      const pageNumber = parseInt(req.query.page);
       const postId = req.params.postId;
       const deleted = await res.locals.store.deletePost(postId);
 
@@ -186,7 +219,7 @@ module.exports = (app) => {
         throw new Error("Post not Deleted");
       } else {
         req.flash("success", "Your post has been deleted!");
-        res.redirect("/posts/manage");
+        res.redirect(`/posts/manage?page=${pageNumber}`);
       }
     }),
   );

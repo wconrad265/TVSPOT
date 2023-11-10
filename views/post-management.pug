@@ -18,11 +18,18 @@ block content
               a(href=`/posts/${post.id}?page=1`) #{post.title}
             td #{post.formatted_date} #{post.time}
             td
-              form(action=`/posts/${post.id}/edit`, method="GET")
-                button(type="submit") Edit
+              a.post-management-button(href=`/posts/${post.id}/edit?page=${pageNumber}`, method="GET") Edit
             td
-              form.delete(action=`/posts/${post.id}/delete`, method="POST")
+              form.delete(action=`/posts/${post.id}/delete?page=${pageNumber}`, method="POST")
                 button(type="submit") Delete
 
   p
     a.post-management-button(href='/forum?page=1') Back to Forum
+    
+    if pageNumber > 1
+      a.pagination-button(href=`/posts/manage?page=${pageNumber - 1}`) Previous
+    if maxPageNumber > 1
+      -for (let i = Math.max(1, pageNumber - pagesToShow); i <= Math.min(pageNumber + pagesToShow, maxPageNumber); i += 1)
+        a.pagination-number(href=`/posts/manage?page=${i}`)= i
+    if pageNumber < maxPageNumber
+      a.pagination-button(href=`/posts/manage?page=${pageNumber + 1}`) Next

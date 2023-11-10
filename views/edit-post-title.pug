@@ -3,7 +3,7 @@ extends layout
 block content
   .new-post
     h1=title
-    form(action=`/posts/${postId}/edit`, method="POST")
+    form(action=`/posts/${postId}/edit?page=${pageNumber}`, method="POST")
       label(for="forumPostTitle") New Post Title:
       input(type="text" 
             id="forumPostTitle" 
@@ -12,4 +12,4 @@ block content
             value=forumPostTitle)
 
       button(type="submit") Save
-  a.back-button(href="/posts/manage") Cancel
+  a.back-button(href=`/posts/manage?page=${pageNumber}`) Cancel
