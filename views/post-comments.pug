@@ -9,7 +9,7 @@ block content
       p.comment-info
         | Posted by #{comment.username} • #{comment.formatted_date} at #{comment.time}
       if comment.user_id === currentUserId
-        a.edit-comment-button(href=`/posts/${postId}/comment/${comment.id}/edit?page=${pageNumber}`) Edit Comment
+        a.edit-comment-button(href=`/posts/${postId}/comment/${comment.id}/edit`) Edit Comment
 
   - const pagesToShow = 2;
   .pagination-buttons
@@ -23,6 +23,6 @@ block content
       a.pagination-button(href=`/posts/${postId}?page=${pageNumber + 1}`) Next
 
   .reply-button-container
-    a.reply-button(href=`/posts/${postId}/comment/new?page=${pageNumber}`) Reply
+    a.reply-button(href=`/posts/${postId}/comment/new`) Reply
   p
     

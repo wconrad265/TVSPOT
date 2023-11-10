@@ -19,8 +19,9 @@ module.exports = (app) => {
 
       const maxPageNumber = await store.getMaxUserPosts(POSTS_PER_Pagination);
 
-      if (!maxPageNumber && maxPageNumber !== 0)
+      if (!maxPageNumber && maxPageNumber !== 0) {
         throw new Error("Could not get MaxPageNumber");
+      }
       let userPosts = [];
 
       if (
@@ -130,14 +131,12 @@ module.exports = (app) => {
     checkEditPostPermissions,
     catchError(async (req, res) => {
       const postId = req.params.postId;
-      const pageNumber = parseInt(req.query.page);
       const forumPostTitle = await res.locals.store.getPostTitle(+postId);
 
       res.render("edit-post-title", {
         postId,
         title: `Edit Title for '${forumPostTitle}'`,
         forumPostTitle,
-        pageNumber,
       });
     }),
   );
@@ -161,7 +160,6 @@ module.exports = (app) => {
       const store = res.locals.store;
       const forumPostTitle = req.body.forumPostTitle;
       const postId = req.params.postId;
-      const pageNumber = parseInt(req.query.page);
 
       const renderEditForumPost = async () => {
         const originalForumPostTitle = await store.getPostTitle(postId);
@@ -170,7 +168,6 @@ module.exports = (app) => {
           flash: req.flash(),
           title: `Edit Title for '${originalForumPostTitle}'`,
           postId,
-          pageNumber,
         });
       };
 
@@ -193,7 +190,7 @@ module.exports = (app) => {
         }
 
         req.flash("success", "Your forum title has been edited!");
-        res.redirect(`/posts/manage?page=${pageNumber}`);
+        res.redirect(`/posts/manage?page=1`);
       } catch (error) {
         if (store.isUniqueConstraintViolation(error)) {
           req.flash("error", "Forum Post title must be unique");
@@ -211,7 +208,6 @@ module.exports = (app) => {
     requiresAuthentication,
     checkEditPostPermissions,
     catchError(async (req, res) => {
-      const pageNumber = parseInt(req.query.page);
       const postId = req.params.postId;
       const deleted = await res.locals.store.deletePost(postId);
 
@@ -219,7 +215,7 @@ module.exports = (app) => {
         throw new Error("Post not Deleted");
       } else {
         req.flash("success", "Your post has been deleted!");
-        res.redirect(`/posts/manage?page=${pageNumber}`);
+        res.redirect(`/posts/manage?page=1`);
       }
     }),
   );

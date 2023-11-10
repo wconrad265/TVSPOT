@@ -10,10 +10,8 @@ module.exports = (app) => {
     requiresAuthentication,
     catchError(async (req, res) => {
       const postId = req.params.postId;
-      const pageNumber = parseInt(req.query.page);
       res.render("new-comment", {
         postId,
-        pageNumber,
       });
     }),
   );
@@ -34,7 +32,6 @@ module.exports = (app) => {
       const errors = validationResult(req);
       const postId = req.params.postId;
       const comment = req.body.comment;
-      const pageNumber = parseInt(req.query.page);
 
       if (!errors.isEmpty()) {
         errors.array().forEach((message) => req.flash("error", message.msg));
@@ -42,7 +39,6 @@ module.exports = (app) => {
         return res.render("new-comment", {
           flash: req.flash(),
           postId,
-          pageNumber,
         });
       }
 
@@ -50,7 +46,7 @@ module.exports = (app) => {
       if (!created) throw new Error("Comment could not be created");
 
       req.flash("success", "Your comment has been created!");
-      res.redirect(`/posts/${postId}?page=${pageNumber}`);
+      res.redirect(`/posts/${postId}?page=1`);
     }),
   );
 
@@ -61,7 +57,6 @@ module.exports = (app) => {
     checkEditCommentPermissions,
     catchError(async (req, res) => {
       const { postId, commentId } = req.params;
-      const pageNumber = parseInt(req.query.page);
 
       const comment = await res.locals.store.getComment(+commentId);
       if (!comment) throw new Error("comment does not exist");
@@ -70,7 +65,6 @@ module.exports = (app) => {
         postId,
         commentId,
         comment,
-        pageNumber,
       });
     }),
   );
@@ -91,7 +85,6 @@ module.exports = (app) => {
     catchError(async (req, res) => {
       const errors = validationResult(req);
       const { postId, commentId } = req.params;
-      const pageNumber = parseInt(req.query.page);
       const comment = req.body.comment;
 
       if (!errors.isEmpty()) {
@@ -100,7 +93,6 @@ module.exports = (app) => {
           flash: req.flash(),
           postId,
           commentId,
-          pageNumber,
         });
       }
 
@@ -112,7 +104,7 @@ module.exports = (app) => {
         throw new Error("Something went wrong Comment not Updated");
 
       req.flash("success", "Your comment has been updated!");
-      res.redirect(`/posts/${postId}/?page=${pageNumber}`);
+      res.redirect(`/posts/${postId}/?page=1`);
     }),
   );
 
@@ -123,13 +115,12 @@ module.exports = (app) => {
     checkEditCommentPermissions,
     catchError(async (req, res) => {
       const { postId, commentId } = req.params;
-      const pageNumber = req.query.page;
 
       const deleted = await res.locals.store.deleteComment(postId, commentId);
       if (!deleted) throw new Error("Comment not Deleted");
 
       req.flash("success", "Your comment has been deleted!");
-      res.redirect(`/posts/${postId}/?page=${pageNumber}`);
+      res.redirect(`/posts/${postId}/?page=1`);
     }),
   );
 };

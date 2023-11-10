@@ -18,9 +18,9 @@ block content
               a(href=`/posts/${post.id}?page=1`) #{post.title}
             td #{post.formatted_date} #{post.time}
             td
-              a.post-management-button(href=`/posts/${post.id}/edit?page=${pageNumber}`, method="GET") Edit
+              a.post-management-button(href=`/posts/${post.id}/edit`, method="GET") Edit
             td
-              form.delete(action=`/posts/${post.id}/delete?page=${pageNumber}`, method="POST")
+              form.delete(action=`/posts/${post.id}/delete`, method="POST")
                 button(type="submit") Delete
 
   p

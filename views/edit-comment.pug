@@ -4,11 +4,11 @@ block content
   .container
     .new-comment
       h1 Edit Comment
-      form(action=`/posts/${postId}/comment/${commentId}/edit?page=${pageNumber}`, method="POST")
+      form(action=`/posts/${postId}/comment/${commentId}/edit`, method="POST")
         label(for="comment") Comment Text
         textarea(type="text", id="comment", name="comment", rows="5") #{comment}
         button.edit-button(type="submit") Edit Comment
-      form.delete(action=`/posts/${postId}/comment/${commentId}/delete?page=${pageNumber}`, method="POST")
+      form.delete(action=`/posts/${postId}/comment/${commentId}/delete`, method="POST")
         button.delete-button(type="submit") Delete
 
-    a.back-button(href=`/posts/${postId}?page=${pageNumber}`) Back
+    a.back-button(href=`/posts/${postId}?page=1`) Back
