@@ -16,24 +16,22 @@ module.exports = (app) => {
       const pageNumber = parseInt(req.query.page);
       const store = res.locals.store;
 
-      if (isNaN(pageNumber) || pageNumber < 1)
+      if (isNaN(pageNumber) || pageNumber < 1) {
         throw new Error("Invalid Page Number");
+      }
 
       const maxPageNumber = await store.getMaxPosts(POSTS_PER_Pagination);
+      if (!maxPageNumber) throw new Error("maxPageNumber Error");
 
-      if (!maxPageNumber && maxPageNumber !== 0)
-        throw new Error("Could not get MaxPageNumber");
-      let posts = [];
-
-      if (
-        (maxPageNumber === 0 && pageNumber > 1) ||
-        (maxPageNumber !== 0 && pageNumber > maxPageNumber)
-      ) {
-        throw new Error("Invalid Page Number");
-      } else if (maxPageNumber !== 0) {
-        posts = await store.getPostsForPage(pageNumber, POSTS_PER_Pagination);
-        if (!posts) throw new Error("Posts not found");
+      if (pageNumber > maxPageNumber) {
+        throw new Error("Page does not exist");
       }
+
+      const posts = await store.getPostsForPage(
+        pageNumber,
+        POSTS_PER_Pagination,
+      );
+      if (!posts) throw new Error("Posts not found");
 
       res.render("forum-posts", {
         posts,

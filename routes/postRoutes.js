@@ -97,7 +97,7 @@ module.exports = (app) => {
         req.flash("error", "Forum Post title must be unique");
         return renderNewForumPost(null, forumPostComment);
       }
-
+      //forum postId is returned and is used to create comment
       const createdPost = await store.createPost(forumPostTitle);
 
       if (!createdPost) {
@@ -228,25 +228,22 @@ module.exports = (app) => {
         postId,
         COMMENTS_PER_PAGINATION,
       );
-      let forumPostComments = [];
 
-      if (
-        (maxPageNumber === 0 && pageNumber > 1) ||
-        (maxPageNumber !== 0 && pageNumber > maxPageNumber)
-      ) {
-        throw new Error("Invalid Page Number");
-      } else if (maxPageNumber !== 0) {
-        forumPostComments = await store.getCommentsForPage(
-          postId,
-          pageNumber,
-          COMMENTS_PER_PAGINATION,
-        );
-        if (!forumPostComments) throw new Error("Comments not found for post");
+      if (!maxPageNumber) throw new Error("maxPageNumber Error");
+
+      if (pageNumber > maxPageNumber) {
+        throw new Error("Page does not exist");
       }
 
-      const forumPostTitle = await store.getPostTitle(+postId);
+      const [forumPostComments, forumPostTitle] = await Promise.all([
+        store.getCommentsForPage(postId, pageNumber, COMMENTS_PER_PAGINATION),
+        store.getPostTitle(+postId),
+      ]);
+
+      if (!forumPostComments) throw new Error("Comments not found for post");
+
       if (!forumPostTitle) throw new Error("Post Title not found");
-      console.log(forumPostComments);
+
       res.render("post-comments", {
         forumPostComments,
         pageNumber,

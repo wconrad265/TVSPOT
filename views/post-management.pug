@@ -25,7 +25,7 @@ block content
 
   p
     a.post-management-button(href='/forum?page=1') Back to Forum
-    
+    - const pagesToShow = 2;
     if pageNumber > 1
       a.pagination-button(href=`/posts/manage?page=${pageNumber - 1}`) Previous
     if maxPageNumber > 1
