@@ -14,31 +14,23 @@ module.exports = (app) => {
       const pageNumber = parseInt(req.query.page);
       const store = res.locals.store;
 
-      if (isNaN(pageNumber) || pageNumber < 1)
+      if (isNaN(pageNumber) || pageNumber < 1) {
         throw new Error("Invalid Page Number");
+      }
 
       const maxPageNumber = await store.getMaxUserPosts(POSTS_PER_Pagination);
+      if (!maxPageNumber) throw new Error("maxPageNumber Error");
 
-      if (!maxPageNumber && maxPageNumber !== 0) {
-        throw new Error("Could not get MaxPageNumber");
-      }
-      let userPosts = [];
-
-      if (
-        (maxPageNumber === 0 && pageNumber > 1) ||
-        (maxPageNumber !== 0 && pageNumber > maxPageNumber)
-      ) {
-        throw new Error("Invalid Page Number");
-      } else if (maxPageNumber !== 0) {
-        userPosts = await store.getUserPostsForPage(
-          pageNumber,
-          POSTS_PER_Pagination,
-        );
-        if (!userPosts) throw new Error("Posts not found");
+      if (pageNumber > maxPageNumber && maxPageNumber !== 0) {
+        throw new Error("Page does not exist");
       }
 
-      if (!userPosts) throw new Error("User Posts not found");
-      console.log(pageNumber, maxPageNumber);
+      const userPosts = await store.getUserPostsForPage(
+        pageNumber,
+        POSTS_PER_Pagination,
+      );
+      if (!userPosts) throw new Error("Posts not found");
+
       res.render("post-management", {
         userPosts,
         pageNumber,
