@@ -21,7 +21,7 @@ module.exports = (app) => {
       const maxPageNumber = await store.getMaxUserPosts(POSTS_PER_Pagination);
       if (!maxPageNumber) throw new Error("maxPageNumber Error");
 
-      if (pageNumber > maxPageNumber && maxPageNumber !== 0) {
+      if (pageNumber > maxPageNumber) {
         throw new Error("Page does not exist");
       }
 
