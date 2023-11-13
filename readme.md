@@ -10,7 +10,7 @@ TV Spot Forum is a simple forum application where users can create posts, leave 
 - **Post Management**: Users can manage their posts, edit titles, and delete posts.
 - **Comment Management**: Users can edit and delete their comments.
 
-*Users are not able to edit the date that their comments/posts were created.
+\*Users are not able to edit the date that their comments/posts were created.
 
 ## Version Information
 
@@ -20,7 +20,7 @@ Postgres Version: (PostgreSQL) 12.16
 
 ## Getting Started
 
-## Installation
+### Installation
 
 To install and run the application, follow these steps:
 
@@ -28,22 +28,26 @@ To install and run the application, follow these steps:
 2. Extract the zip file on your local machine.
 3. Open a terminal and navigate to the extracted project directory using the `cd` command.
 4. Run `npm install` to install the necessary dependencies.
-5. Run the following scripts below in `Database Setup` to create the database for the forum.
+5. Follow the steps below in `Database Setup` to create the database for the forum. You will have option to create a database with sample data.
 6. To run the application, use the `npm start` command. This will start the server and the application will be accessible by default at `http://localhost:3000`.
 
 ### Database Setup
 
-## Database Setup
 
-The project includes two scripts in the package.json file for setting up the database:
+The project includes two scripts in the package.json file for setting up the database. (All scrips run using bash):
 
 - `npm run init-db-sample`: This script checks if the `forum` database exists. If it does, it prompts the user to either drop the existing database and recreate it with seed data and schema, or cancel the operation. If the `forum` database does not exist, it prompts the user to create it with seed data and schema.
 
 - `npm run init-db-schema`: This script checks if the `forum` database exists. If it does, it prompts the user to either delete the existing database and create a new blank database with the schema, or cancel the operation. If the `forum` database does not exist, it prompts the user to create it with the schema.
 
-## User Data for Sample Database
+- You can also set up using the following commands in your terminal.
+  - `createdb forum` will create the database. (If you already have a database named forum, you will need to drop it with `dropdb forum`);
+  - `psql forum < schema.sql` will add the schema located in `schema.sql` to your new created database
+  - `psql forum < ./lib/seed-data.sql` (optional) will load the database with sample data. If you do not want sample data, please skip this step.
 
-The following table provides the usernames and their corresponding passwords for the sample database. Please note that for demonstration purposes, all users have the same password, which is `1234`. 
+### User Data for Sample Database
+
+The following table provides the usernames and their corresponding passwords for the sample database. Please note that for demonstration purposes, all users have the same password, which is `1234`.
 
 | Username       | Password |
 | -------------- | -------- |
@@ -53,7 +57,6 @@ The following table provides the usernames and their corresponding passwords for
 | scifigeek      | 1234     |
 | comedylover    | 1234     |
 
-
-## Usage
+### Usage
 
 To run the application, use the `npm start` command. This will start the server and the application will be accessible by default at `http://localhost:3000`.
