@@ -16,7 +16,11 @@ TV Spot Forum is a simple forum application where users can create posts, leave 
 ## Version Information
 
 Node Version: 19.4.0
-Browser used for testing: Microsoft Edge Version 119.0.2151.44 (Official build) (64-bit)
+Browser used for testing:
+
+- Microsoft Edge: Version 119.0.2151.44 (Official build) (64-bit)
+- Google Chrome Version 119.0.6045.124 (Official Build) (64-bit)
+
 Postgres Version: (PostgreSQL) 12.16
 
 ## Getting Started
