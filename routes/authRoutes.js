@@ -26,8 +26,10 @@ module.exports = (app) => {
         req.session.username = username;
         req.session.signedIn = true;
         req.session.userId = await store.getUserId(username);
+
         const redirectTo = req.session.redirectTo || "/forum?page=1"; // redirect to the
         delete req.session.redirectTo;
+
         req.flash("info", "Welcome!");
         res.redirect(redirectTo);
       }
