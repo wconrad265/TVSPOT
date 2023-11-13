@@ -29,7 +29,7 @@ To install and run the application, follow these steps:
 3. Open a terminal and navigate to the extracted project directory using the `cd` command.
 4. Run `npm install` to install the necessary dependencies.
 5. Follow the steps below in `Database Setup` to create the database for the forum. You will have option to create a database with sample data.
-6. To run the application, use the `npm start` command. This will start the server and the application will be accessible by default at `http://localhost:3000`.
+6. To run the application, use the `npm start` command. This will start the server and the application will be accessible by default at `http://localhost:3000`, if running it on your own local machine.
 
 ### Database Setup
 
