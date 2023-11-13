@@ -112,7 +112,7 @@ module.exports = (app) => {
       if (!createdComment) throw new Error("Comment not Created");
 
       req.flash("success", "Your forum post has been created!");
-      res.redirect("/forum?page=1"); // Redirect to the first page of the forum
+      res.redirect("/forum?page=1");
     }),
   );
 

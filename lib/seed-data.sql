@@ -13,7 +13,7 @@ INSERT INTO Posts (title, user_id, date) VALUES
     ('The Crown - Royal Drama', 1, NOW() - INTERVAL '10 days'), 
     ('Introduce yourself!', 2, NOW() - INTERVAL '11 days');  
 
-
+-- Introduce Yourself
 INSERT INTO Comments (date, markdown_body, user_id, post_id) VALUES
     (NOW() - INTERVAL '7 day', 'Hi Everyone! Welcome to the forum! I made this post so you all can introduce yourself!', 2, 6),
     (NOW() - INTERVAL '6 days', 'Nice to meet you all, and glad to be here!', 1, 6),

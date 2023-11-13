@@ -12,6 +12,8 @@ TV Spot Forum is a simple forum application where users can create posts, leave 
 
 \*Users are not able to edit the date that their comments/posts were created.
 
+- Posts/comments are sorted by date then time they were created.
+
 ## Version Information
 
 Node Version: 19.4.0
@@ -32,7 +34,6 @@ To install and run the application, follow these steps:
 6. To run the application, use the `npm start` command. This will start the server and the application will be accessible by default at `http://localhost:3000`, if running it on your own local machine.
 
 ### Database Setup
-
 
 The project includes two scripts in the package.json file for setting up the database. (All scrips run using bash):
 
