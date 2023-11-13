@@ -11,8 +11,7 @@ TV Spot Forum is a simple forum application where users can create posts, leave 
 - **Comment Management**: Users can edit and delete their comments.
 
 \*Users are not able to edit the date that their comments/posts were created.
-
-- Posts/comments are sorted by date then time they were created.
+\*Posts/comments are sorted by date then time they were created.
 
 ## Version Information
 
@@ -25,6 +24,7 @@ Postgres Version: (PostgreSQL) 12.16
 ### Installation
 
 To install and run the application, follow these steps:
+\*Please note the steps assume you have node and postgres already installed
 
 1. Download the zip file of the project.
 2. Extract the zip file on your local machine.
