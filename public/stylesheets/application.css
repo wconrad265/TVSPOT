@@ -531,3 +531,13 @@ th.Actions {
   background-color: #f0f0f0;
   color: #000;
 }
+
+.current-page {
+  text-decoration: none;
+  color: red;
+  padding: 4px 8px;
+  margin: 0 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
