@@ -29,7 +29,7 @@ module.exports = (app) => {
 
         const redirectTo = req.session.redirectTo || "/forum?page=1"; // redirect to page user was on
         delete req.session.redirectTo;
-
+        console.log(redirectTo, "login was successful", authenticated);
         req.flash("info", "Welcome!");
         res.redirect(redirectTo);
       }
