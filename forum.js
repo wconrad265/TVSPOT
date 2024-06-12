@@ -14,6 +14,7 @@ const errorHandlingRoutes = require("./routes/errorHandlingRoutes.js");
 const port = config.PORT; //removed host
 const LokiStore = store(session);
 
+app.enable("trust proxy");
 app.set("views", "./views");
 app.set("view engine", "pug");
 app.use(morgan("common"));
