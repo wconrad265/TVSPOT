@@ -26,7 +26,6 @@ app.use(
       maxAge: 31 * 24 * 60 * 60 * 1000, // 31 days in millseconds
       path: "/",
       secure: true,
-      domain: "forum.app.willconrad.dev",
     },
     name: "new-forum",
     resave: false,
