@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon forum.js",
+    "start": "node forum.js",
     "dev": "nodemon --inspect forum.js",
     "format": "npx prettier . --write",
     "init-db-sample": "bash ./lib/init-db-sample.sh",
