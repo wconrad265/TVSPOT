@@ -13,8 +13,8 @@ const commentRoutes = require("./routes/commentRoutes.js");
 const errorHandlingRoutes = require("./routes/errorHandlingRoutes.js");
 const port = config.PORT; //removed host
 const LokiStore = store(session);
+app.set("trust proxy", true);
 
-app.enable("trust proxy");
 app.set("views", "./views");
 app.set("view engine", "pug");
 app.use(morgan("common"));
@@ -45,8 +45,6 @@ app.use((req, res, next) => {
 
 //extract session info
 app.use((req, res, next) => {
-  console.log(req.session);
-
   res.locals.flash = req.session.flash;
   res.locals.signedIn = req.session.signedIn;
   res.locals.username = req.session.username;
