@@ -44,6 +44,8 @@ app.use((req, res, next) => {
 
 //extract session info
 app.use((req, res, next) => {
+  console.log(req.session);
+
   res.locals.flash = req.session.flash;
   res.locals.signedIn = req.session.signedIn;
   res.locals.username = req.session.username;
