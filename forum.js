@@ -11,7 +11,7 @@ const authRoutes = require("./routes/authRoutes.js");
 const postRoutes = require("./routes/postRoutes.js");
 const commentRoutes = require("./routes/commentRoutes.js");
 const errorHandlingRoutes = require("./routes/errorHandlingRoutes.js");
-const port = config.PORT;
+const port = config.PORT; //removed host
 const LokiStore = store(session);
 
 app.set("views", "./views");
