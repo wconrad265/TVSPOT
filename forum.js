@@ -11,7 +11,6 @@ const authRoutes = require("./routes/authRoutes.js");
 const postRoutes = require("./routes/postRoutes.js");
 const commentRoutes = require("./routes/commentRoutes.js");
 const errorHandlingRoutes = require("./routes/errorHandlingRoutes.js");
-const host = config.HOST;
 const port = config.PORT;
 const LokiStore = store(session);
 
@@ -26,7 +25,7 @@ app.use(
       httpOnly: true,
       maxAge: 31 * 24 * 60 * 60 * 1000, // 31 days in millseconds
       path: "/",
-      secure: false,
+      secure: true,
     },
     name: "new-forum",
     resave: false,
@@ -63,6 +62,6 @@ authRoutes(app);
 
 errorHandlingRoutes(app);
 
-app.listen(port, host, () => {
+app.listen(port, () => {
   console.log(`Project is listening on port ${port} !`);
 });
