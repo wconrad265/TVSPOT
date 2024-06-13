@@ -16,11 +16,14 @@ const port = config.PORT;
 
 const redisClient = redis.createClient({
   url: config.REDIS_URL, // Ensure you have a REDIS_URL in your config
-  legacyMode: true, // Enable legacy mode for compatibility
 });
 
-redisClient.connect().catch(console.error);
+redisClient
+  .connect()
+  .then(() => console.log("connected to redis"))
+  .catch(console.error);
 
+const redisStore = new RedisStore({ client: redisClient, prefix: "TV-Spot" });
 app.set("trust proxy", true);
 
 app.set("views", "./views");
@@ -36,11 +39,11 @@ app.use(
       path: "/",
       secure: true,
     },
-    name: "new-forum",
+    name: "TV-Spot",
     resave: false,
     saveUninitialized: true,
     secret: config.SECRET,
-    store: new RedisStore({ client: redisClient }),
+    store: redisStore,
   }),
 );
 
