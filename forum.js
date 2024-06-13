@@ -3,7 +3,8 @@ const express = require("express");
 const morgan = require("morgan");
 const flash = require("express-flash");
 const session = require("express-session");
-const store = require("connect-loki");
+const redis = require("redis");
+const RedisStore = require("connect-redis").default;
 const PgPersistence = require("./lib/pg-persistence.js");
 const app = express();
 const forumRoute = require("./routes/forumRoute.js");
@@ -11,8 +12,15 @@ const authRoutes = require("./routes/authRoutes.js");
 const postRoutes = require("./routes/postRoutes.js");
 const commentRoutes = require("./routes/commentRoutes.js");
 const errorHandlingRoutes = require("./routes/errorHandlingRoutes.js");
-const port = config.PORT; //removed host
-const LokiStore = store(session);
+const port = config.PORT;
+
+const redisClient = redis.createClient({
+  url: config.REDIS_URL, // Ensure you have a REDIS_URL in your config
+  legacyMode: true, // Enable legacy mode for compatibility
+});
+
+redisClient.connect().catch(console.error);
+
 app.set("trust proxy", true);
 
 app.set("views", "./views");
@@ -32,7 +40,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     secret: config.SECRET,
-    store: new LokiStore({}),
+    store: new RedisStore({ client: redisClient }),
   }),
 );
 
